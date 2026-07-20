@@ -10,17 +10,17 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('order_number')->unique();
-            $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled'])->default('pending');
+            $table->string('status')->default('pending');
             $table->decimal('subtotal', 10, 2);
             $table->decimal('tax', 10, 2)->default(0);
             $table->decimal('shipping', 10, 2)->default(0);
             $table->decimal('total', 10, 2);
             $table->string('payment_method')->nullable();
-            $table->enum('payment_status', ['pending', 'completed', 'failed', 'refunded'])->default('pending');
-            $table->json('shipping_address');
-            $table->json('billing_address');
+            $table->string('payment_status')->default('pending');
+            $table->jsonb('shipping_address');
+            $table->jsonb('billing_address');
             $table->text('notes')->nullable();
             $table->timestamp('shipped_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
